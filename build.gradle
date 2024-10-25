@@ -1,28 +1,14 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        maven { url "https://repo.gradle.org/gradle/libs-releases" }
-        maven { url "https://plugins.gradle.org/m2/" }
-    }
-    dependencies {
-        classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
-        classpath "com.github.erdi:webdriver-binaries-gradle-plugin:3.2"
-        classpath "org.graceframework.plugins:asset-pipeline-gradle:5.2.6"
-        classpath "org.jooq:jooq-codegen-gradle:3.19.10"
-    }
+plugins {
+    id "eclipse"
+    id "idea"
+    id "war"
+    id "org.graceframework.asset-pipeline"
+    id "org.graceframework.grace-web"
+    id "org.graceframework.grace-gsp"
+    id "com.github.erdi.webdriver-binaries"
 }
 
 group "grace.guides"
-version "0.0.1-SNAPSHOT"
-
-apply plugin: "eclipse"
-apply plugin: "idea"
-apply plugin: "war"
-apply plugin: "org.jooq.jooq-codegen-gradle"
-apply plugin: "org.graceframework.grace-web"
-apply plugin: "com.github.erdi.webdriver-binaries"
-apply plugin: "org.graceframework.grace-gsp"
-apply plugin: "org.graceframework.asset-pipeline"
 
 repositories {
     mavenCentral()
@@ -33,24 +19,18 @@ configurations {
 }
 
 dependencies {
-    developmentOnly('org.springframework.boot:spring-boot-devtools')
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
     console "org.graceframework:grace-console"
     jooqCodegen "com.h2database:h2:2.1.214"
-    implementation "org.springframework.boot:spring-boot-starter-jooq", {
-        exclude group: 'org.jooq', module: 'jooq'
-    }
-    implementation "org.jooq:jooq:3.19.10"
-    implementation "org.flywaydb:flyway-core"
     implementation "org.springframework.boot:spring-boot-starter-logging"
     implementation "org.springframework.boot:spring-boot-starter-validation"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation "org.graceframework:grace-core"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.boot:spring-boot-starter-tomcat"
     implementation "org.graceframework:grace-boot"
     implementation "org.graceframework:grace-logging"
-    implementation "org.graceframework:grace-plugin-controllers"
     implementation "org.graceframework:grace-plugin-codecs"
+    implementation "org.graceframework:grace-plugin-controllers"
     implementation "org.graceframework:grace-plugin-databinding"
     implementation "org.graceframework:grace-plugin-datasource"
     implementation "org.graceframework:grace-plugin-domain-class"
@@ -60,21 +40,17 @@ dependencies {
     implementation "org.graceframework:grace-plugin-rest"
     implementation "org.graceframework:grace-plugin-services"
     implementation "org.graceframework:grace-plugin-url-mappings"
-    implementation "org.graceframework.plugins:cache"
     implementation "org.graceframework.plugins:async"
+    implementation "org.graceframework.plugins:cache"
+    implementation "org.graceframework.plugins:database-migration"
+    implementation "org.graceframework.plugins:events"
+    implementation "org.graceframework.plugins:hibernate"
     implementation "org.graceframework.plugins:scaffolding"
     implementation "org.graceframework.plugins:fields"
-    implementation "org.graceframework.plugins:events"
-    implementation "org.graceframework.plugins:hibernate5"
-    implementation "org.hibernate:hibernate-core:5.6.15.Final"
     implementation "org.graceframework:grace-plugin-gsp"
     profile "org.graceframework.profiles:web"
     runtimeOnly "com.h2database:h2"
-    runtimeOnly "org.apache.tomcat:tomcat-jdbc"
-    runtimeOnly "jakarta.xml.bind:jakarta.xml.bind-api:2.3.3"
-    runtimeOnly "jakarta.el:jakarta.el-api:3.0.3"
-    runtimeOnly "org.glassfish:jakarta.el:3.0.4"
-    runtimeOnly "org.graceframework.plugins:asset-pipeline-plugin:5.2.6"
+    runtimeOnly "org.graceframework.plugins:asset-pipeline-plugin:6.0.1"
     testImplementation "org.graceframework:grace-test-support"
     testImplementation "org.mockito:mockito-core"
     testImplementation "org.graceframework.plugins:geb"
@@ -86,33 +62,19 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = '11'
+    sourceCompatibility = '17'
 }
 
-bootRun {
-    ignoreExitValue true
-    jvmArgs(
-        '-Dspring.output.ansi.enabled=always', 
-        '-noverify', 
-        '-XX:TieredStopAtLevel=1',
-        '-Xmx1024m')
-    sourceResources sourceSets.main
-    String springProfilesActive = 'spring.profiles.active'
-    systemProperty springProfilesActive, System.getProperty(springProfilesActive)
+tasks.withType(Jar) {
+    configure {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
 }
 
 tasks.withType(GroovyCompile) {
     configure(groovyOptions) {
         forkOptions.jvmArgs = ['-Xmx1024m']
     }
-}
-
-tasks.withType(JavaCompile) {
-    dependsOn 'jooqCodegen'
-}
-
-tasks.withType(Test) {
-    useJUnitPlatform()
 }
 
 webdriverBinaries {
@@ -134,31 +96,4 @@ tasks.withType(Test) {
 assets {
     minifyJs = true
     minifyCss = true
-}
-
-jooq {
-    configuration {
-        jdbc {
-            url = 'jdbc:h2:file:./build/gs_jooq_dev'
-            username = 'sa'
-            password = ''
-            initScript = 'src/main/resources/db/migration/V1__INIT.sql'
-        }
-        generator {
-            database {
-                inputSchema = 'PUBLIC'
-            }
-            target {
-                packageName = 'grace.guides.db'
-            }
-        }
-    }
-}
-
-sourceSets {
-    main {
-        java {
-            srcDirs += ['build/generated-sources/jooq']
-        }
-    }
 }
