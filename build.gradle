@@ -2,11 +2,14 @@ plugins {
     id "eclipse"
     id "idea"
     id "war"
+    id "org.jooq.jooq-codegen-gradle"
     id "org.graceframework.asset-pipeline"
     id "org.graceframework.grace-web"
     id "org.graceframework.grace-gsp"
     id "com.github.erdi.webdriver-binaries"
 }
+
+ext['jooq.version'] = '3.19.12'
 
 group "grace.guides"
 
@@ -22,8 +25,10 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     console "org.graceframework:grace-console"
     jooqCodegen "com.h2database:h2:2.1.214"
+    implementation "org.springframework.boot:spring-boot-starter-jooq"
+    implementation "org.flywaydb:flyway-core"
     implementation "org.springframework.boot:spring-boot-starter-logging"
-    implementation "org.springframework.boot:spring-boot-starter-validation"
+    // implementation "org.springframework.boot:spring-boot-starter-validation"
     implementation "org.graceframework:grace-core"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.boot:spring-boot-starter-tomcat"
@@ -42,7 +47,7 @@ dependencies {
     implementation "org.graceframework:grace-plugin-url-mappings"
     implementation "org.graceframework.plugins:async"
     implementation "org.graceframework.plugins:cache"
-    implementation "org.graceframework.plugins:database-migration"
+    // implementation "org.graceframework.plugins:database-migration"
     implementation "org.graceframework.plugins:events"
     implementation "org.graceframework.plugins:hibernate"
     implementation "org.graceframework.plugins:scaffolding"
@@ -77,6 +82,10 @@ tasks.withType(GroovyCompile) {
     }
 }
 
+tasks.withType(JavaCompile) {
+    dependsOn 'jooqCodegen'
+}
+
 webdriverBinaries {
     chromedriver {
         version = '122.0.6260.0'
@@ -96,4 +105,31 @@ tasks.withType(Test) {
 assets {
     minifyJs = true
     minifyCss = true
+}
+
+jooq {
+    configuration {
+        jdbc {
+            url = 'jdbc:h2:file:./build/gs_jooq_dev'
+            username = 'sa'
+            password = ''
+            initScript = 'src/main/resources/db/migration/V1__INIT.sql'
+        }
+        generator {
+            database {
+                inputSchema = 'PUBLIC'
+            }
+            target {
+                packageName = 'grace.guides.db'
+            }
+        }
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += ['build/generated-sources/jooq']
+        }
+    }
 }
