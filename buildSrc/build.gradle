@@ -1,12 +1,11 @@
 repositories {
     mavenCentral()
-    maven { url "https://repo.gradle.org/gradle/libs-releases" }
-    maven { url "https://plugins.gradle.org/m2/" }
+    gradlePluginPortal()
 }
 
 dependencies {
-    implementation "org.graceframework:grace-gradle-plugin:2023.2.0"
-    implementation "org.graceframework.plugins:asset-pipeline-gradle:6.2.0"
+    implementation "org.graceframework:grace-gradle-plugin:2023.3.0"
+    implementation "org.graceframework.plugins:asset-pipeline-gradle:6.3.0"
     // implementation "org.graceframework.plugins:database-migration:6.0.1"
-    implementation "org.jooq:jooq-codegen-gradle:3.19.12"
+    implementation "org.jooq:jooq-codegen-gradle:3.19.24"
 }

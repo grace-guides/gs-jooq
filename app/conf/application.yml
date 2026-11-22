@@ -41,6 +41,7 @@ environments:
 
 ---
 hibernate:
+    dialect: org.hibernate.dialect.H2Dialect
     cache:
         queries: false
         use_second_level_cache: false

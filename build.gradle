@@ -8,7 +8,7 @@ plugins {
     id "org.graceframework.grace-gsp"
 }
 
-ext['jooq.version'] = '3.19.12'
+// ext['jooq.version'] = '3.19.24'
 
 group "grace.guides"
 
@@ -54,15 +54,14 @@ dependencies {
     implementation "org.graceframework:grace-plugin-gsp"
     profile "org.graceframework.profiles:web"
     runtimeOnly "com.h2database:h2"
-    runtimeOnly "org.graceframework.plugins:asset-pipeline-plugin:6.2.0"
+    runtimeOnly "org.graceframework.plugins:asset-pipeline-plugin"
     testImplementation "org.graceframework:grace-test-support"
     testImplementation "org.mockito:mockito-core"
     testImplementation "org.graceframework.plugins:geb"
-    testImplementation "org.seleniumhq.selenium:selenium-remote-driver:4.2.2"
-    testImplementation "org.seleniumhq.selenium:selenium-api:4.2.2"
-    testImplementation "org.seleniumhq.selenium:selenium-support:4.2.2"
-    testRuntimeOnly "org.seleniumhq.selenium:selenium-chrome-driver:4.2.2"
-    testRuntimeOnly "org.seleniumhq.selenium:selenium-firefox-driver:4.2.2"
+    testImplementation "org.seleniumhq.selenium:selenium-api"
+    testImplementation "org.seleniumhq.selenium:selenium-support"
+    testRuntimeOnly "org.seleniumhq.selenium:selenium-chrome-driver"
+    testRuntimeOnly "org.seleniumhq.selenium:selenium-firefox-driver"
 }
 
 java {
@@ -89,8 +88,6 @@ tasks.withType(Test) {
     useJUnitPlatform()
     systemProperty "geb.env", System.getProperty('geb.env')
     systemProperty "geb.build.reportsDir", reporting.file("geb/integrationTest")
-    systemProperty 'webdriver.chrome.driver', System.getProperty('webdriver.chrome.driver')
-    systemProperty 'webdriver.gecko.driver', System.getProperty('webdriver.gecko.driver')
 }
 
 assets {
