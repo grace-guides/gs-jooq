@@ -6,7 +6,6 @@ plugins {
     id "org.graceframework.asset-pipeline"
     id "org.graceframework.grace-web"
     id "org.graceframework.grace-gsp"
-    id "com.github.erdi.webdriver-binaries"
 }
 
 ext['jooq.version'] = '3.19.12'
@@ -24,11 +23,11 @@ configurations {
 dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     console "org.graceframework:grace-console"
-    jooqCodegen "com.h2database:h2:2.3.232"
+    jooqCodegen "com.h2database:h2:2.2.224"
     implementation "org.springframework.boot:spring-boot-starter-jooq"
     implementation "org.flywaydb:flyway-core"
     implementation "org.springframework.boot:spring-boot-starter-logging"
-    // implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
     implementation "org.graceframework:grace-core"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.boot:spring-boot-starter-web"
@@ -49,13 +48,13 @@ dependencies {
     implementation "org.graceframework.plugins:cache"
     // implementation "org.graceframework.plugins:database-migration"
     implementation "org.graceframework.plugins:events"
-    implementation "org.graceframework.plugins:hibernate"
+    // implementation "org.graceframework.plugins:hibernate"
     implementation "org.graceframework.plugins:scaffolding"
     implementation "org.graceframework.plugins:fields"
     implementation "org.graceframework:grace-plugin-gsp"
     profile "org.graceframework.profiles:web"
     runtimeOnly "com.h2database:h2"
-    runtimeOnly "org.graceframework.plugins:asset-pipeline-plugin:6.1.1"
+    runtimeOnly "org.graceframework.plugins:asset-pipeline-plugin:6.2.0"
     testImplementation "org.graceframework:grace-test-support"
     testImplementation "org.mockito:mockito-core"
     testImplementation "org.graceframework.plugins:geb"
@@ -84,14 +83,6 @@ tasks.withType(GroovyCompile) {
 
 tasks.withType(JavaCompile) {
     dependsOn 'jooqCodegen'
-}
-
-webdriverBinaries {
-    chromedriver {
-        version = '122.0.6260.0'
-        fallbackTo32Bit = true
-    }
-    geckodriver '0.33.0'
 }
 
 tasks.withType(Test) {
