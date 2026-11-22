@@ -23,8 +23,6 @@ spring:
                 - '*.properties'
     jpa:
         open-in-view: false
-    liquibase:
-        enabled: false
 environments:
     development:
         management:
@@ -48,7 +46,6 @@ hibernate:
         use_query_cache: false
 dataSource:
     pooled: true
-    jmxExport: true
     driverClassName: org.h2.Driver
     username: sa
     password: ''
@@ -66,24 +63,7 @@ environments:
         dataSource:
             dbCreate: none
             url: jdbc:h2:./gs_jooq_prod;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
-            properties:
-                jmxEnabled: true
-                initialSize: 5
-                maxActive: 50
-                minIdle: 5
-                maxIdle: 25
-                maxWait: 10000
-                maxAge: 600000
-                timeBetweenEvictionRunsMillis: 5000
-                minEvictableIdleTimeMillis: 60000
-                validationQuery: SELECT 1
-                validationQueryTimeout: 3
-                validationInterval: 15000
-                testOnBorrow: true
-                testWhileIdle: true
-                testOnReturn: false
-                jdbcInterceptors: ConnectionState
-                defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+
 ---
 # If you don't want use GORM with Hibernate, just use Spring DataSource
 # spring:
