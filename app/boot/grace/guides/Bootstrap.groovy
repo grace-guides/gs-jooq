@@ -1,6 +1,6 @@
 package grace.guides
 
-class BootStrap {
+class Bootstrap {
 
     def init() {
     }
