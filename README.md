@@ -2,16 +2,17 @@
 [![Apache 2.0 license](https://img.shields.io/badge/License-APACHE%202.0-green.svg?logo=APACHE&style=flat)](https://opensource.org/licenses/Apache-2.0)
 [![Grace on X](https://img.shields.io/twitter/follow/graceframework?style=social)](https://x.com/graceframework)
 
-[![Groovy Version](https://img.shields.io/badge/Groovy-4.0.33-blue?style=flat&color=4298b8)](https://groovy-lang.org/releasenotes/groovy-4.0.html)
-[![Grace Version](https://img.shields.io/badge/Grace-2024.2.0-blue?style=flat&color=f49b06)](https://github.com/graceframework/grace-framework/releases/tag/v2024.2.0)
-[![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-3.5.16-blue?style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v3.5.16)
+[![Groovy Version](https://img.shields.io/badge/Groovy-5.0.8-blue?style=flat&color=4298b8)](https://groovy-lang.org/releasenotes/groovy-5.0.html)
+[![Grace Version](https://img.shields.io/badge/Grace-2025.0.0-M3-blue?style=flat&color=f49b06)](https://github.com/graceframework/grace-framework/releases/tag/v2025.0.0-M3)
+[![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-4.0.9-blue?style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v4.0.9)
 
 
 # Grace and jOOQ
 
 ## Grace Version
 
-* Grace v2024.2.0
+* Grace v2025.0.0-M3
+* jOOQ 3.19.39
 
 ## Add jooq to build.gradle
 
@@ -19,7 +20,7 @@ In `buildSrc/build.gradle`,
 
 ```groovy
 dependencies {
-    implementation "org.jooq:jooq-codegen-gradle:3.19.35"
+    implementation "org.jooq:jooq-codegen-gradle:3.19.39"
 }
 ```
 
@@ -28,7 +29,7 @@ In `build.gradle`,
 ```groovy
 
 dependencies {
-    jooqCodegen "com.h2database:h2:2.3.232"
+    jooqCodegen "com.h2database:h2:2.4.240"
     implementation "org.springframework.boot:spring-boot-starter-jooq"
 }
 
